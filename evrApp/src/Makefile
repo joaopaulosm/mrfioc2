@@ -26,6 +26,8 @@ evr_SRCS += evrGTIF.cpp
 
 evr_SRCS += devEvrStringIO.cpp
 
+evr_SRCS += devEvrUtag.cpp
+
 evr_SRCS += devEvrEvent.cpp
 evr_SRCS += devEvrMapping.cpp
 

@@ -156,6 +156,9 @@ try {
         p->evr->getTimeStamp(&prec->time,p->event);
     }
 
+    // set UTAG
+    prec->utag = static_cast<epicsUInt64>(p->evr->Utag());
+
     return 0;
 } catch(std::runtime_error& e) {
     recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
@@ -200,6 +203,9 @@ try {
         p->evr->getTimeStamp(&prec->time,p->event);
     }
 
+    // set UTAG
+    prec->utag = static_cast<epicsUInt64>(p->evr->Utag());
+
     return 0;
 } catch(std::runtime_error& e) {
     recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
@@ -219,6 +225,9 @@ try {
     if(prec->tse==epicsTimeEventDeviceTime){
         p->evr->getTimeStamp(&prec->time,p->event);
     }
+
+    // set UTAG
+    prec->utag = static_cast<epicsUInt64>(p->evr->Utag());
 
     return 0;
 } catch(std::runtime_error& e) {

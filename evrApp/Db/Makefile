@@ -16,6 +16,7 @@ DB += evrcmlextra.db
 DB += evrevent.db
 DB += evrevent-cycle.db
 DB += evrsoftgate.db
+DB += evrutag.db
 DB += evralias.db
 DB += evrNtp.db
 
