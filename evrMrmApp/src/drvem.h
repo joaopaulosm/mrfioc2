@@ -193,6 +193,9 @@ public:
     virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
     virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
 
+    virtual epicsUInt32 Utag() const OVERRIDE FINAL {return utag;}
+    virtual void UtagSet(epicsUInt32 utag_) OVERRIDE FINAL;
+
     void enableIRQ(void);
 
     bool dcEnabled() const;
@@ -314,6 +317,9 @@ private:
     epicsUInt32 lastInvalidTimestamp;
     epicsUInt32 lastValidTimestamp;
     static void seconds_tick(void*, epicsUInt32);
+
+    // UTAG manipulation
+    epicsUInt32 utag;
 
     // bit map of which event #'s are mapped
     // used as a safty check to avoid overloaded mappings

@@ -1563,3 +1563,8 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
         callbackRequest(&evr->timeSrc_cb);
     }
 }
+
+void
+EVRMRM::UtagSet(epicsUInt32 utag_) {
+    utag = utag_;
+}

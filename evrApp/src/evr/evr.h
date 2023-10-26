@@ -191,6 +191,10 @@ public:
   epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
   /*@}*/
 
+
+  virtual epicsUInt32 Utag() const {return 0;};
+  virtual void UtagSet(epicsUInt32 utag_) {};
+
 private:
   bus_configuration busConfiguration;
 }; // class EVR
