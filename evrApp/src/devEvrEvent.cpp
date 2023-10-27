@@ -152,12 +152,18 @@ try {
     if (prec->val>=0 && prec->val<=255)
         post_event(prec->val);
 
+    // getTimeStampUTag method avoids EVR mutex being locked twice in a row
     if(prec->tse==epicsTimeEventDeviceTime){
-        p->evr->getTimeStamp(&prec->time,p->event);
+        // p->evr->getTimeStamp(&prec->time,p->event);
+        epicsTimeStampUTag ts;
+        p->evr->getTimeStampUTag(&ts, p->event);
+        prec->time.secPastEpoch = ts.secPastEpoch;
+        prec->time.nsec = ts.secPastEpoch;
+        prec->utag = ts.utag;
     }
 
     // set UTAG
-    prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
+    //prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
 
     return 0;
 } catch(std::runtime_error& e) {
@@ -200,11 +206,16 @@ try {
 #endif
 
     if(prec->tse==epicsTimeEventDeviceTime){
-        p->evr->getTimeStamp(&prec->time,p->event);
+        // p->evr->getTimeStamp(&prec->time,p->event);
+        epicsTimeStampUTag ts;
+        p->evr->getTimeStampUTag(&ts, p->event);
+        prec->time.secPastEpoch = ts.secPastEpoch;
+        prec->time.nsec = ts.secPastEpoch;
+        prec->utag = ts.utag;
     }
 
     // set UTAG
-    prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
+    //prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
 
     return 0;
 } catch(std::runtime_error& e) {
@@ -223,11 +234,16 @@ static long process_event(eventRecord *prec)
     long ret=0;
 try {
     if(prec->tse==epicsTimeEventDeviceTime){
-        p->evr->getTimeStamp(&prec->time,p->event);
+        // p->evr->getTimeStamp(&prec->time,p->event);
+        epicsTimeStampUTag ts;
+        p->evr->getTimeStampUTag(&ts, p->event);
+        prec->time.secPastEpoch = ts.secPastEpoch;
+        prec->time.nsec = ts.secPastEpoch;
+        prec->utag = ts.utag;
     }
 
     // set UTAG
-    prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
+    //prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
 
     return 0;
 } catch(std::runtime_error& e) {

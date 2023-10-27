@@ -178,6 +178,7 @@ public:
     virtual IOSCANPVT TimeStampValidEvent() const OVERRIDE FINAL {return timestampValidChange;}
 
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event) OVERRIDE FINAL;
+    virtual bool getTimeStampUTag(epicsTimeStampUTag *ts,epicsUInt32 event) OVERRIDE FINAL;
     virtual bool getTicks(epicsUInt32 *tks) OVERRIDE FINAL;
     virtual IOSCANPVT eventOccurred(epicsUInt32 event) const OVERRIDE FINAL;
     virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
@@ -197,10 +198,6 @@ public:
     virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
     virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
 
-    // virtual epicsUInt32 eventUtag() const OVERRIDE FINAL;
-    // virtual void eventUtagSet(epicsUInt32 event) OVERRIDE FINAL;
-    // virtual epicsUTag Utag() const OVERRIDE FINAL;
-    // virtual void UtagSet(epicsUTag tag) OVERRIDE FINAL;
     virtual epicsUTag eventUtag(const epicsUInt32 event) const OVERRIDE FINAL;
     virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) OVERRIDE FINAL;
 
