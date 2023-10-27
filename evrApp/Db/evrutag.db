@@ -7,7 +7,6 @@
 
 record(longout, "$(EN)-SP") {
   field(DTYP, "UTAG Source")
-  field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(OBJ)")
   field(VAL , "0")
   info(autosaveFields_pass0, "OUT VAL")
