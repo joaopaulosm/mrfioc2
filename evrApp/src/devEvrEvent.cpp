@@ -157,7 +157,7 @@ try {
     }
 
     // set UTAG
-    prec->utag = static_cast<epicsUInt64>(p->evr->Utag());
+    prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
 
     return 0;
 } catch(std::runtime_error& e) {
@@ -204,7 +204,7 @@ try {
     }
 
     // set UTAG
-    prec->utag = static_cast<epicsUInt64>(p->evr->Utag());
+    prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
 
     return 0;
 } catch(std::runtime_error& e) {
@@ -227,7 +227,7 @@ try {
     }
 
     // set UTAG
-    prec->utag = static_cast<epicsUInt64>(p->evr->Utag());
+    prec->utag = static_cast<epicsUInt64>(p->evr->eventUtag(p->event));
 
     return 0;
 } catch(std::runtime_error& e) {

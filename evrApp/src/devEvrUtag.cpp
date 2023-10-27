@@ -20,7 +20,7 @@
 #include <alarm.h>
 #include <errlog.h>
 
-#include <longoutRecord.h>
+#include <int64outRecord.h>
 #include <epicsVersion.h>
 
 #include "devObj.h"
@@ -34,13 +34,15 @@
 struct priv {
     EVR* evr;
     char obj[30];
-    int utag;
+    int event;
+    epicsUTag utag;
 };
 
 static const
 linkOptionDef utagdef[] =
 {
     linkString  (priv, obj , "OBJ"  , 1, 0),
+    linkInt32   (priv, event, "Code", 1, 0),
     linkOptionEnd
 };
 
@@ -53,6 +55,7 @@ try {
 
     mrf::auto_ptr<priv> p(new priv);
     p->utag=0;
+    p->event=0;
 
     if (linkOptionsStore(utagdef, p.get(), link->value.instio.string, 0))
         throw std::runtime_error("Couldn't parse link string");
@@ -99,15 +102,15 @@ try {
     return ret;
 }
 
-static long process_longout(longoutRecord *prec)
+static long process_int64out(int64outRecord *prec)
 {
     priv *p=static_cast<priv*>(prec->dpvt);
     long ret=0;
 try {
 
-    // TODO: adjust signed/unsigned 32/64 conversion
-    p->utag = prec->val;
-    p->evr->UtagSet(p->utag);
+    // TODO: code documentation
+    p->utag = static_cast<epicsUTag>(prec->val);
+    p->evr->eventUtagSet(p->event, p->utag);
     prec->utag = p->utag; // do we need this?
 
     return 0;
@@ -123,22 +126,22 @@ try {
 
 
 static
-long add_longout(struct dbCommon *precord)
+long add_int64out(struct dbCommon *precord)
 {
-    return add_record(precord, &((struct longoutRecord*)precord)->out);
+    return add_record(precord, &((struct int64outRecord*)precord)->out);
 }
 
-dsxt dxtLOUTAGEVR={add_longout,del_record};
-static common_dset devLOUTAGEVR = {
+dsxt dxtINT64UTAGEVR={add_int64out,del_record};
+static common_dset devINT64UTAGEVR = {
   6, NULL,
-  dset_cast(&init_dset<&dxtLOUTAGEVR>),
+  dset_cast(&init_dset<&dxtINT64UTAGEVR>),
   (DEVSUPFUN) init_record_empty,
   (DEVSUPFUN) NULL,
-  dset_cast(&process_longout),
+  dset_cast(&process_int64out),
   NULL };
 
 extern "C" {
 
-epicsExportAddress(dset,devLOUTAGEVR);
+epicsExportAddress(dset,devINT64UTAGEVR);
 
 }

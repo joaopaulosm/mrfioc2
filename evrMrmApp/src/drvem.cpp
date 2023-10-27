@@ -1564,7 +1564,34 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
     }
 }
 
-void
-EVRMRM::UtagSet(epicsUInt32 utag_) {
-    utag = utag_;
+
+// TODO: code documentation
+epicsUTag
+EVRMRM::eventUtag(const epicsUInt32 event) const {
+    if(event==0) return 0;
+    else if(event>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    return events[event].utag;
 }
+
+void
+EVRMRM::eventUtagSet(const epicsUInt32 event, epicsUTag tag) {
+    if(event==0) return;
+    else if(event>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    // set UTAG value to particular event
+    events[event].utag = tag;
+    return;
+}
+
+// epicsUTag
+// EVRMRM::Utag() const {
+//     return 0;
+// }
+
+// void
+// EVRMRM::UtagSet(epicsUTag tag) {
+//     utag = 0;
+// }

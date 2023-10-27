@@ -191,9 +191,12 @@ public:
   epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
   /*@}*/
 
-
-  virtual epicsUInt32 Utag() const {return 0;};
-  virtual void UtagSet(epicsUInt32 utag_) {};
+  // TODO: code documentation
+  // virtual epicsUInt32 eventUtag() const {return 0;};
+  virtual epicsUTag eventUtag(const epicsUInt32 event) const {return 0;};
+  virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) {};
+  // virtual epicsUTag Utag() const {return 0;};
+  // virtual void UtagSet(epicsUTag tag) {};
 
 private:
   bus_configuration busConfiguration;
