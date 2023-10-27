@@ -833,6 +833,71 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
     return true;
 }
 
+bool
+EVRMRM::getTimeStampUTag(epicsTimeStampUTag *ret,epicsUInt32 event)
+{
+    if(!ret) throw std::runtime_error("Invalid argument");
+    epicsTimeStampUTag tstag;
+    epicsTimeStamp ts;
+
+    SCOPED_LOCK(evrLock);
+    if(timestampValid<TSValidThreshold) return false;
+
+    if(event>0 && event<=255) {
+        // Get time of last event code #
+
+        eventCode *entry=&events[event];
+
+        // Fail if event is not mapped
+        if (!entry->interested ||
+            ( entry->last_sec==0 &&
+              entry->last_evt==0) )
+        {
+            return false;
+        }
+
+        tstag.secPastEpoch=entry->last_sec;
+        tstag.nsec=entry->last_evt;
+        tstag.utag=entry->utag;
+
+
+    } else {
+        // Get current absolute time
+
+        epicsUInt32 ctrl=READ32(base, Control);
+
+        // Latch timestamp
+        WRITE32(base, Control, ctrl|Control_tsltch);
+
+        tstag.secPastEpoch=READ32(base, TSSecLatch);
+        tstag.nsec=READ32(base, TSEvtLatch);
+        tstag.utag = 0;
+
+        /* BUG: There was a firmware bug which occasionally
+         * causes the previous write to fail with a VME bus
+         * error, and 0 the Control register.
+         *
+         * This issues has been fixed in VME firmwares EVRv 5
+         * pre2 and EVG v3 pre2.  Feb 2011
+         */
+        epicsUInt32 ctrl2=READ32(base, Control);
+        if (ctrl2!=ctrl) { // tsltch bit is write-only
+            printf("Get timestamp: control register write fault. Written: %08x, readback: %08x\n",ctrl,ctrl2);
+            WRITE32(base, Control, ctrl);
+        }
+
+    }
+
+    ts.secPastEpoch = tstag.secPastEpoch;
+    ts.nsec = tstag.nsec;
+    if(!convertTS(&ts))
+        return false;
+
+    *ret = tstag;
+    return true;
+}
+
+
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
  @returns false if conversion failed
  */
@@ -1564,7 +1629,6 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
     }
 }
 
-
 // TODO: code documentation
 epicsUTag
 EVRMRM::eventUtag(const epicsUInt32 event) const {
@@ -1586,12 +1650,3 @@ EVRMRM::eventUtagSet(const epicsUInt32 event, epicsUTag tag) {
     return;
 }
 
-// epicsUTag
-// EVRMRM::Utag() const {
-//     return 0;
-// }
-
-// void
-// EVRMRM::UtagSet(epicsUTag tag) {
-//     utag = 0;
-// }
