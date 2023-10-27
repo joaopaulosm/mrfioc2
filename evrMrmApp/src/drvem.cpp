@@ -826,7 +826,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 
     }
 
-    if(!convertTS(&ts))
+    if(!convertTS<epicsTimeStamp>(&ts))
         return false;
 
     *ret = ts;
@@ -838,7 +838,6 @@ EVRMRM::getTimeStampUTag(epicsTimeStampUTag *ret,epicsUInt32 event)
 {
     if(!ret) throw std::runtime_error("Invalid argument");
     epicsTimeStampUTag tstag;
-    epicsTimeStamp ts;
 
     SCOPED_LOCK(evrLock);
     if(timestampValid<TSValidThreshold) return false;
@@ -888,9 +887,7 @@ EVRMRM::getTimeStampUTag(epicsTimeStampUTag *ret,epicsUInt32 event)
 
     }
 
-    ts.secPastEpoch = tstag.secPastEpoch;
-    ts.nsec = tstag.nsec;
-    if(!convertTS(&ts))
+    if(!convertTS<epicsTimeStampUTag>(&tstag))
         return false;
 
     *ret = tstag;
@@ -901,8 +898,8 @@ EVRMRM::getTimeStampUTag(epicsTimeStampUTag *ret,epicsUInt32 event)
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
  @returns false if conversion failed
  */
-bool
-EVRMRM::convertTS(epicsTimeStamp* ts)
+template<typename TimeStampT>
+bool EVRMRM::convertTS(TimeStampT* ts)
 {
     // First validate the input
 
@@ -1426,7 +1423,7 @@ EVRMRM::drain_fifo()
                     active.flushtime.secPastEpoch = evt.last_sec;
                     active.flushtime.nsec = evt.last_evt;
 
-                    active.ok &= convertTS(&active.flushtime);
+                    active.ok &= convertTS<epicsTimeStamp>(&active.flushtime);
 
                     tbuf->doFlush();
                 }
