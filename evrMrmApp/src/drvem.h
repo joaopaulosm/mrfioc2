@@ -72,8 +72,12 @@ struct eventCode {
     size_t waitingfor;
     bool again;
 
+    // UTAG associated to event
+    epicsUTag utag;
+
     eventCode():owner(0), interested(0), last_sec(0)
-            ,last_evt(0), waitingfor(0), again(false)
+            ,last_evt(0), waitingfor(0), again(false),
+            utag(0)
     {
         scanIoInit(&occured);
         // done_cb - initialized in EVRMRM::EVRMRM()
@@ -193,8 +197,12 @@ public:
     virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
     virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
 
-    virtual epicsUInt32 Utag() const OVERRIDE FINAL {return utag;}
-    virtual void UtagSet(epicsUInt32 utag_) OVERRIDE FINAL;
+    // virtual epicsUInt32 eventUtag() const OVERRIDE FINAL;
+    // virtual void eventUtagSet(epicsUInt32 event) OVERRIDE FINAL;
+    // virtual epicsUTag Utag() const OVERRIDE FINAL;
+    // virtual void UtagSet(epicsUTag tag) OVERRIDE FINAL;
+    virtual epicsUTag eventUtag(const epicsUInt32 event) const OVERRIDE FINAL;
+    virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) OVERRIDE FINAL;
 
     void enableIRQ(void);
 
@@ -317,9 +325,6 @@ private:
     epicsUInt32 lastInvalidTimestamp;
     epicsUInt32 lastValidTimestamp;
     static void seconds_tick(void*, epicsUInt32);
-
-    // UTAG manipulation
-    epicsUInt32 utag;
 
     // bit map of which event #'s are mapped
     // used as a safty check to avoid overloaded mappings

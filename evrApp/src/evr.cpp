@@ -152,7 +152,8 @@ OBJECT_BEGIN(EVR) {
 
     OBJECT_PROP1("SW Output status", &EVR::mappedOutputState);
 
-    OBJECT_PROP2("UTAG", &EVR::Utag, &EVR::UtagSet);
+    // OBJECT_PROP2("Event UTAG", &EVR::eventUtag, &EVR::eventUtagSet);
+    // OBJECT_PROP2("UTAG", &EVR::Utag, &EVR::UtagSet);
 
 } OBJECT_END(EVR)
 
