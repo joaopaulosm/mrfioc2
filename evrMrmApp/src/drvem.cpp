@@ -834,7 +834,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 }
 
 bool
-EVRMRM::getTimeStampUTag(epicsTimeStampUTag *ret,epicsUInt32 event)
+EVRMRM::getTimeStamp(epicsTimeStampUTag *ret,epicsUInt32 event)
 {
     if(!ret) throw std::runtime_error("Invalid argument");
     epicsTimeStampUTag tstag;

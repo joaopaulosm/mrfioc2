@@ -108,10 +108,12 @@ static long process_int64out(int64outRecord *prec)
     long ret=0;
 try {
 
-    // TODO: code documentation
+    // Inject the value as the UTAG reference
     p->utag = static_cast<epicsUTag>(prec->val);
     p->evr->eventUtagSet(p->event, p->utag);
-    prec->utag = p->utag; // do we need this?
+#ifdef DBR_UTAG
+    prec->utag = static_cast<epicsUInt64>(p->utag);
+#endif
 
     return 0;
 } catch(std::runtime_error& e) {
