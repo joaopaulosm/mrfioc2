@@ -202,12 +202,14 @@ public:
   epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
   /*@}*/
 
-  // TODO: code documentation
-  // virtual epicsUInt32 eventUtag() const {return 0;};
+  /**\defgroup utagman UTAG Management
+   *
+   * Get/Set UTAG value for specific event
+   */
+  /*@{*/
   virtual epicsUTag eventUtag(const epicsUInt32 event) const {return 0;};
   virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) {};
-  // virtual epicsUTag Utag() const {return 0;};
-  // virtual void UtagSet(epicsUTag tag) {};
+  /*@}*/
 
 private:
   bus_configuration busConfiguration;

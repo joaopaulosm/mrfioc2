@@ -1626,7 +1626,7 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
     }
 }
 
-// TODO: code documentation
+// Get UTAG value for specific event 
 epicsUTag
 EVRMRM::eventUtag(const epicsUInt32 event) const {
     if(event==0) return 0;
@@ -1636,6 +1636,7 @@ EVRMRM::eventUtag(const epicsUInt32 event) const {
     return events[event].utag;
 }
 
+// Set UTAG value for specific event 
 void
 EVRMRM::eventUtagSet(const epicsUInt32 event, epicsUTag tag) {
     if(event==0) return;
