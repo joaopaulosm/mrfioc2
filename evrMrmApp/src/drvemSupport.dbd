@@ -13,3 +13,7 @@ variable(mrmEvrFIFOPeriod,double)
 variable(evrMrmSeqRxDebug, int)
 variable(evrMrmTimeDebug, int)
 variable(evrMrmTimeNSOverflowThreshold, int)
+
+# SHM interfaces (Linux only)
+registrar(rxBufferShmRegister)
+registrar(eventTimestampShmRegister)

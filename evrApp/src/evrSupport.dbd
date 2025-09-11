@@ -45,3 +45,6 @@ registrar(EVRTime_Registrar)
 registrar(ntpShmRegister)
 driver(ntpShared)
 variable(mrmGTIFEnable, int)
+
+#registrar(daqShmRegister)
+#driver(daqShared)

@@ -40,6 +40,9 @@ evrMrm_SRCS += irqHack.cpp
 
 evrMrm_SRCS += mrmGpio.cpp
 
+evrMrm_SRCS_Linux += rxBufferShm.cpp
+evrMrm_SRCS_Linux += eventTimestampShm.cpp
+
 evrMrm_LIBS += mrfCommon mrmShared evr epicspci epicsvme $(EPICS_BASE_IOC_LIBS)
 
 #=============================
